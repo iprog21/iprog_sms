@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/iprog_sms'
+
+# Welcome message
+puts "Welcome to IPROG SMS Sender!"
+
+# Prompt for phone number
+print "Enter the phone number to send SMS: "
+phone_number = gets.chomp
+
+# Prompt for message
+print "Enter the message to send: "
+message = gets.chomp
+
+# Initialize SMS sender
+sms = IprogSms::SMS.new
+
+# Check if SIM800C is connected
+if sms.connected?
+  puts "SIM800C module detected! Sending SMS..."
+  sms.send_sms(phone_number, message)
+  puts "SMS sent successfully!"
+else
+  puts "SIM800C module not detected. Please check your connection."
+end

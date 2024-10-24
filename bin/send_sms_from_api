@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/iprog_sms'
+
+# Welcome message
+puts "Welcome to IPROG SMS Sender with API!"
+
+# Prompt for API URL
+print "Enter the API URL to fetch SMS details: "
+api_url = gets.chomp
+
+# Initialize the SMS sender with API
+sender = IprogSms::Sender.new(api_url)
+
+# Check if SIM800C is connected
+if sender.instance_variable_get(:@sms_sender).connected?
+  puts "SIM800C module detected! Fetching SMS details from API and sending..."
+  sender.send_sms_from_api
+  puts "SMS sent successfully!"
+else
+  puts "SIM800C module not detected. Please check your connection."
+end
