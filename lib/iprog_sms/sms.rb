@@ -5,9 +5,9 @@ require 'rubyserial'
 
 module IprogSms
   class SMS
-    def initialize
+    def initialize(port_str = "/dev/ttyUSB0")
       @baud_rate = 9600
-      @port_str = detect_sim800c || "/dev/ttyUSB0"  # Detect SIM800C port automatically
+      @port_str = port_str  # Use the passed port, or default to "/dev/ttyUSB0"
     end
 
     def send_sms(phone_number, message)
@@ -16,14 +16,14 @@ module IprogSms
           # Open the serial connection
           serial = Serial.new(@port_str, @baud_rate)
 
-          # Set SMS to text mode
-          send_at_command(serial, "AT+CMGF=1")
+          # Set SMS to text mode with a shorter delay
+          send_at_command(serial, "AT+CMGF=1", 1)
 
-          # Specify the recipient phone number
-          send_at_command(serial, "AT+CMGS=\"#{phone_number}\"")
+          # Specify the recipient phone number with a shorter delay
+          send_at_command(serial, "AT+CMGS=\"#{phone_number}\"", 1)
 
-          # Send the actual SMS message, followed by Ctrl+Z (ASCII 26)
-          send_at_command(serial, "#{message}\x1A", 5)
+          # Send the actual SMS message, followed by Ctrl+Z (ASCII 26), with a longer delay for processing
+          send_at_command(serial, "#{message}\x1A", 3)
 
           puts "SMS sent to #{phone_number}."
           serial.close
@@ -48,40 +48,6 @@ module IprogSms
     end
 
     private
-
-    def detect_sim800c
-      # List all potential serial ports (Linux/macOS). For Windows, replace with 'COM*'.
-      potential_ports = Dir['/dev/ttyUSB*'] + Dir['/dev/tty.usbserial*'] + Dir['/dev/tty.*']
-
-      potential_ports.each do |port|
-        puts "Checking port: #{port}"
-        begin
-          # Try opening the port
-          serial = Serial.new(port, @baud_rate)
-
-          # Send the AT command
-          serial.write("AT\r")
-          sleep(1) # Wait for a response
-          response = serial.read(100)
-
-          # If the response contains "OK", it's likely the SIM800C
-          if response.include?("OK")
-            puts "SIM800C detected on port: #{port}"
-            serial.close
-            return port  # Return the correct port
-          else
-            puts "No response from #{port}, moving to next port..."
-            serial.close
-          end
-        rescue StandardError => e
-          puts "Error on #{port}: #{e.message}"
-        end
-      end
-
-      # If no SIM800C is detected
-      puts "No SIM800C module detected."
-      nil
-    end
 
     def send_at_command(serial, command, wait_time = 1)
       puts "Sending command: #{command}"

@@ -25,7 +25,7 @@ $ gem install iprog_sms
 
 **Send SMS**
 ```ruby
-bin/send_sms
+bin/iprog_send_sms
 ```
 Demo: https://youtu.be/3MnbHhyuuGY
 
@@ -33,9 +33,16 @@ Demo: https://youtu.be/3MnbHhyuuGY
 
 **Send SMS from API**
 ```ruby
-bin/send_sms_from_api
+bin/iprog_send_sms_from_api
 ```
 Demo: https://youtu.be/Zx4jOFucmsk
+
+---
+
+**SIM800c Troubleshoot**
+```ruby
+bin/iprog_sms_troubleshoot
+```
 
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/iprog21/iprog_sms.

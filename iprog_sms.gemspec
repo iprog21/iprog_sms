@@ -25,4 +25,9 @@ Gem::Specification.new do |spec|
 
   # Adding rubyserial as a dependency
   spec.add_dependency "rubyserial", "~> 0.3.0"
+
+  # Adding bin executables
+  spec.executables << 'iprog_sms_troubleshoot'
+  spec.executables << 'iprog_send_sms'
+  spec.executables << 'iprog_send_sms_from_api'
 end

@@ -13,8 +13,13 @@ phone_number = gets.chomp
 print "Enter the message to send: "
 message = gets.chomp
 
-# Initialize SMS sender
-sms = IprogSms::SMS.new
+# Optional: Prompt for the serial port (useful if there are multiple ports)
+print "Enter the serial port for SIM800C (or press Enter to use default /dev/ttyUSB0): "
+port = gets.chomp
+port = port.empty? ? "/dev/ttyUSB0" : port
+
+# Initialize SMS sender with the specified or default port
+sms = IprogSms::SMS.new(port)
 
 # Check if SIM800C is connected
 if sms.connected?

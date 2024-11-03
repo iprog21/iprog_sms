@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'iprog_sms'
+
+# Ensure that a port argument is provided
+if ARGV.empty?
+  puts "Usage: iprog_sms_troubleshoot <port>"
+  puts "Example: iprog_sms_troubleshoot /dev/tty.usbserial-1120"
+  exit(1)
+end
+
+# Get the serial port from the command-line arguments
+port_str = ARGV[0]
+
+# Run the troubleshooting method
+IprogSms.troubleshoot_sim800c(port_str)
