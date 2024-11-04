@@ -17,3 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Add new executable file for SIM800C troubleshooting
 - Rename other executable files in bin/
 - Register executables on iprog_sms.gemspec
+
+## [0.1.2] - 2024-11-04
+- Increase delay time when sending AT commands
+- Add error handling and store to instance variable error_message
